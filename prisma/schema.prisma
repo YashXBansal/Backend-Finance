@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  email        String        @unique
+  name         String
+  password     String
+  role         Role          @default(VIEWER)
+  status       UserStatus    @default(ACTIVE)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  transactions Transaction[]
+}
+
+model Transaction {
+  id          Int             @id @default(autoincrement())
+  amount      Float
+  type        TransactionType
+  category    Category
+  date        DateTime
+  description String?
+  isDeleted   Boolean         @default(false)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  createdBy   Int
+  user        User            @relation(fields: [createdBy], references: [id])
+}
+
+enum Role {
+  VIEWER
+  ANALYST
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum Category {
+  SALARY
+  FREELANCE
+  RENT
+  FOOD
+  UTILITIES
+  TRANSPORT
+  HEALTHCARE
+  ENTERTAINMENT
+  OTHER
+}
