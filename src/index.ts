@@ -3,5 +3,7 @@ import app from "./server.js";
 const PORT = 3000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port https://localhost:${PORT}`);
+  console.log(
+    `Server running on port https://localhost:${PORT} \n Check health on https://localhost:${PORT}/health`,
+  );
 });
